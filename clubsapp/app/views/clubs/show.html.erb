@@ -1,0 +1,26 @@
+<div>
+	<div><% if @club.banner_file_name %>
+	  <%= image_tag @club.banner.url(:medium) %>
+	<% end %></div><br />
+	<div><b><%= @club.name %></b></div><br />
+	<% if @club.website != nil %>
+		<div><%= link_to "External club website", "http://#{@club.website}" %></div><br />
+	<% end %>
+	<% if user_signed_in? %>
+		<% if current_user.clubs.include?(@club) %>
+			<div class="following">Liked</div>
+		<% else %>
+			<div><%= link_to 'Like club', like_path(@club.id), :method => :put %></div>
+		<% end %>
+	<% end %>
+	<div><%= @club.description  %></div><br /><br />
+
+	<div><b>Events coming up</b> <br />
+	<% @events.each do |event| %>
+		<%= link_to event.name, event %><br />
+	<% end %>
+	</div>
+	<% if club_signed_in? && current_club.id == @club.id %>
+		<br /><%= link_to 'Add event', new_event_path %>
+	<% end %>
+</div>

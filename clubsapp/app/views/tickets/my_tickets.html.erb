@@ -1,0 +1,30 @@
+<h1>My tickets</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% current_user.tickets.each do |ticket| %>
+      <tr>
+        <% event = Event.find(ticket.event_id) %>
+        <% club = Club.find(event.club_id) %>
+        <div><%= link_to club.name, club %></div>
+        <% if event.image1_file_name %>
+          <div class="image"><%= image_tag event.image1.url(:thumb) %></div>
+        <% end %>
+        <div class="name"><%= link_to event.name, event %></div>
+        <div><%= event.event_type %></div>
+        <div><%= event.event_time.strftime("%H:%M, %d/%m/%Y") %></div>
+        <div><%= event.location %></div>
+        <div>$<%= ticket.price %></div>
+        <div><%= ticket.description %></div>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

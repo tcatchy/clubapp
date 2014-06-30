@@ -1,0 +1,24 @@
+<h1>Report for "<%= @event.name %>"</h1>
+
+<h3>Event followers</h3>
+<% @event.users.each do |user| %>
+	<div><%= user.full_name %></div>
+<% end %>
+
+<h3>Tickets</h3>
+<div>
+<% @event.tickets.each do |ticket| %>
+	<div><%= ticket.description %></div>
+	<div>Tickets sold: <%= (ticket.number - ticket.count) %>/<%= ticket.number %> @ $<%= ticket.price %></div>
+	<dic>Money gathered: $<%= (ticket.number - ticket.count) * ticket.price %></div><br/>
+
+	<h4>Ticket holders</h4>
+	<% ticket.users.each do |user| %>
+		<div><%= user.full_name %></div>
+	<% end %>
+<% end %>
+</dic><br/>
+
+<div><%= link_to "Back", :back %></div>
+
+

@@ -1,0 +1,33 @@
+// Place all the styles related to the clubs controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#wrap {
+      position:relative;
+      width:220px;
+      margin:100px auto 0;
+    }
+#header{position:relative;line-height:.5em;}
+	.filterform {
+	  width:1000px;
+	  font-size:12px;
+	  display:block;
+}
+.filterform input {
+	  -moz-border-radius:5px;
+	  border-radius:5px;
+	  -webkit-border-radius:5px;
+	  width:275px;
+}
+
+div.clubs
+{
+  display: block;
+  color: red;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+div.following {
+	color: red;
+}

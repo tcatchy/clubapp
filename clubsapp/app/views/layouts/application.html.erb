@@ -1,0 +1,64 @@
+<!DOCTYPE html>	
+<html>	
+<head>	
+	<title>Clubs App</title>	
+	<%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>	
+	<%= javascript_include_tag "application" %>	
+	<%= csrf_meta_tags %>
+	<% if content_for? :for_head %>
+  		<%= yield :for_head %>
+  	<% end %>	
+</head>	
+<body> 
+	<nav class="navbar navbar-default navbar-static-top navbar-inverse" role="navigation">
+      <div class="container">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-links">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+          <%= link_to "clubsapp", clubs_path, class: 'navbar-brand' %>
+          <div class="collapse navbar-collapse" id="navbar-links">
+          <ul class="nav navbar-nav">
+            <% if (user_signed_in? && current_user.user_type == 2) || club_signed_in? %>
+              <li><%= link_to "Announcements", announcements_path %></li>
+            <% end %>
+          	<li><%= link_to "Events", events_path %></li>
+            <% if user_signed_in? %>	
+            	<li><%= link_to "My clubs", my_clubs_path %></li>
+            <% end %>
+
+            <% if user_signed_in? || club_signed_in? %>
+            	<li><%= link_to "My events", my_events_path %></li>
+            <% end %>
+
+            <% if user_signed_in? %>
+            	<li><%= link_to "My tickets", my_tickets_path %></li>
+			 	<li><%= link_to current_user.full_name, 	 	 	 	
+						edit_user_registration_path %></li>	
+			 	<li><%= link_to "Logout", destroy_user_session_path, :method => :delete %></li>	
+			<% end %>	 	 
+
+			<% if club_signed_in? %>	
+			 	<li><%= link_to current_club.name, 	 	 	 	
+						edit_club_registration_path %></li>	
+			 	<li><%= link_to "Club logout", destroy_club_session_path, :method => :delete %></li>	
+			<% end %>
+
+			<% if !club_signed_in? && !user_signed_in? %>	
+			 	<li><%= link_to "Register club", new_club_registration_path %></li>	
+			 	<li><%= link_to "Club login", new_club_session_path %></li>
+				<li><%= link_to "Register user", new_user_registration_path %></li>	
+			 	<li><%= link_to "User login", new_user_session_path %></li>	
+			<% end %>
+         </ul>
+        </div>
+      </div>
+    </nav>
+
+	<div class="container">	
+		<%= yield %>	
+	</div>	
+</body>	
+</html>	

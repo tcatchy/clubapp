@@ -1,0 +1,42 @@
+<% content_for :for_head do %>
+  <!-- Credit to Can Berk Güder for his answer on Stackoverflow.com -->
+  <script type="text/javascript">
+    function toggle(source) {
+      checkboxes = document.getElementsByName('tag_ids[]');
+      for (var i = 0, n = checkboxes.length; i < n; i++) {
+        checkboxes[i].checked = source.checked;
+      }
+    }
+  </script>
+<% end %>
+
+<%= form_for(@announcement) do |f| %>
+  <% if @announcement.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@announcement.errors.count, "error") %> prohibited this announcement from being saved:</h2>
+
+      <ul>
+      <% @announcement.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :body %><br>
+    <%= f.text_area :body %>
+  </div>
+  <%= f.hidden_field :user_id, :value => current_user.id %>
+  <div class="field">
+    <%= f.label :clubs %><br>
+    <div><input type="checkbox" id="selectAll" onClick="toggle(this)"> Select / Deselect All<br/><br/>
+</div>
+    <% @sorted_clubs.each do |club| %>
+      <div><%= check_box_tag('tag_ids[]', club.id) %> <%= club.name %></div>
+    <% end %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

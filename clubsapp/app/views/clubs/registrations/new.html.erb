@@ -1,0 +1,73 @@
+<h2>Register club</h2>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%= devise_error_messages! %>
+
+  <div><%= f.label :name, "Club Name" %><br />
+  <%= f.text_field :name, autofocus: true %></div>
+
+  <div><%= f.label :description %><br />
+  <%= f.text_area :description %></div>
+
+  <div><%= f.label :website %><br />
+  <%= f.text_field :website %></div>
+
+  <div><%= f.label :reg_no, "Registration Number (Must be entered in order to continue)" %><br />
+  <%= f.number_field :reg_no %></div><br />
+
+  <table border="1" width= 225px><tr><td><b>President</b>
+  <div><%= f.label :president_first_name, "First name" %><br />
+  <%= f.text_field :president_first_name %></div>
+
+  <div><%= f.label :president_last_name, "Last name" %><br />
+  <%= f.text_field :president_last_name %></div>
+
+  <div><%= f.label :president_contact, "Contact phone number" %><br />
+  <%= f.text_field :president_contact %></div>
+
+  <div><%= f.label :president_email, "Email" %><br />
+  <%= f.email_field :president_email %></div>
+  </td></tr></table><br />
+
+  <table border="1" width= 225px><tr><td><b>Treasurer</b>
+  <div><%= f.label :treasurer_first_name, "First name" %><br />
+  <%= f.text_field :treasurer_first_name %></div>
+
+  <div><%= f.label :treasurer_last_name, "Last name" %><br />
+  <%= f.text_field :treasurer_last_name %></div>
+
+  <div><%= f.label :treasurer_contact, "Contact phone number" %><br />
+  <%= f.text_field :treasurer_contact %></div>
+
+  <div><%= f.label :treasurer_email, "Email" %><br />
+  <%= f.email_field :treasurer_email %></div>
+  </td></tr></table><br />
+
+  <table border="1" width= 225px><tr><td><b>Administrator</b><br />
+  	<i>This person will administer the club on this application</i><br />
+  <div><%= f.label :admin_first_name, "First name" %><br />
+  <%= f.text_field :admin_first_name %></div>
+
+  <div><%= f.label :admin_last_name, "Last name" %><br />
+  <%= f.text_field :admin_last_name %></div>
+
+  <div><%= f.label :admin_contact, "Contact phone number" %><br />
+  <%= f.text_field :admin_contact %></div>
+
+  <div><%= f.label :email, "Email" %><br />
+  <%= f.email_field :email %></div>
+  </td></tr></table><br />
+
+  <div><%= f.label :nickname %><br />
+  <%= f.text_field :nickname %></div>
+
+  <div><%= f.label :password %><br />
+    <%= f.password_field :password, autocomplete: "off" %></div>
+
+  <div><%= f.label :password_confirmation %><br />
+    <%= f.password_field :password_confirmation, autocomplete: "off" %></div>
+
+  <div><%= f.submit "Sign up" %></div>
+<% end %>
+
+<%= render "clubs/shared/links" %>

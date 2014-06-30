@@ -1,0 +1,105 @@
+<% if club_signed_in? && current_club.id == @event.club_id %>
+  <div><%= link_to "Event Report", report_path(@event.id) %></div>
+<% end %>
+
+<div>
+  <% if @event.image1_file_name %>
+    <%= image_tag @event.image1.url(:medium) %>
+  <% end %>
+  <% if @event.image2_file_name %>
+    <%= image_tag @event.image2.url(:medium) %>
+  <% end %>
+  <% if @event.image3_file_name %>
+    <%= image_tag @event.image3.url(:medium) %>
+  <% end %>
+</div>
+
+<div>
+  <strong><%= @event.name %></strong>
+  (<%= @event.event_type %>)
+</div><br />
+<div>
+  <div><img src="http://www.clipartbest.com/cliparts/jix/Er5/jixEr5g7T.jpeg" alt="clock" height="20" width="20">
+  <%= @event.event_time.strftime("%A %B %d, %l:%M %p") %>
+  </div>
+</div><br />
+
+<div>
+  <img src="http://maps.google.com/mapfiles/ms/icons/red.png" alt="clock" height="20" width="20">
+  <%= @event.location %>
+</div><br />
+
+<p>
+  <%= @event.description %>
+</p>
+<% if user_signed_in? %>
+  <% if current_user.events.include?(@event) %>
+    <div class="following">Following event</div><br />
+  <% else %>
+    <div><%= link_to 'Follow event', follow_path(@event.id, current_user.id), :method => :put %></div><br />
+  <% end %>
+<% end %>
+
+<h3>Comments</h3>
+<% @comments.each do |comment| %>
+  <div>
+    <% if comment.club_id == -1 %>
+      <% user = User.find(comment.user_id) %>
+      <strong><%= user.full_name %></strong>
+    <% else %>
+      <% club = Club.find(comment.club_id) %>
+      <strong><%= club.name %></strong>
+    <% end %>
+    <br />
+    <p><%= comment.body %></p>
+    <% if user_signed_in? %>
+      <% if current_user.id == comment.user_id || current_user.user_type == 2 %>
+        <p><%= link_to 'Delete', comment_path(comment), method: :delete, data: { confirm: 'Are you sure?' } %></p>
+      <% end %>
+    <% elsif club_signed_in? %>
+      <% if current_club.id == comment.club_id %>
+        <p><%= link_to 'Delete', comment_path(comment), method: :delete, data: { confirm: 'Are you sure?' } %></p>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+<% if user_signed_in? || club_signed_in? %>
+  <%= render 'comments/form' %>
+<% end %>
+
+<div><strong>Tickets</strong></div>
+
+<!-- Rendering tickets part -->
+<% @tickets.each do |ticket| %>
+  <% current_date = Time.now.to_date %>
+  <% if ticket.count > 0 %>
+    <div>Sold from <%= ticket.start_date.strftime("%A %d %B %y") %> to <%= ticket.end_date.strftime("%A %d %B %y") %></div>
+    <p><%= ticket.count %> out of <%= ticket.number %> tickets left @ <%= "%.2f" % ticket.price %> each</p>
+    <p><%= ticket.purchase_location %></p>
+    <p><%= ticket.description %></p>
+  <% else %>
+    <div>SOLD OUT!!</div>
+  <% end %>
+  <% if club_signed_in? %>
+    <% if current_club.id == @event.club_id %>
+      <%= link_to 'Edit ticket', edit_ticket_path(ticket) %> |
+    <% end %>
+  <% elsif user_signed_in? %>
+    <% if current_date >= ticket.start_date && current_date <= ticket.end_date && ticket.count > 0 %>
+      <% if !current_user.tickets.include?(ticket) %>
+        <%= link_to 'Reserve ticket', reserve_ticket_path(@event.id, ticket.id), :method => :put %><br />
+      <% else %>
+        <div class="following">You have already reserved your tickets</div>
+      <% end %>
+    <% elsif %>
+      <div class="following">Not currently selling. Check back between the dates listed above or the tickets have sold out</div>
+    <% end %>
+  <% end %>
+<% end %>
+
+<!-- Show first two in club admin mode only -->
+<% if club_signed_in? && current_club.id == @event.club_id %>
+  <%= link_to 'Add tickets', new_event_ticket_path(@event.id) %> |
+  <%= link_to 'Edit event', edit_event_path(@event) %>
+<% end %>
+</div>

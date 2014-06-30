@@ -1,0 +1,22 @@
+<h1>Admin Announcements</h1>
+
+<div>
+  <% @announcements.each do |announcement| %>
+    <div>
+    <% if (club_signed_in? && announcement.clubs.include?(current_club)) || (user_signed_in? && current_user.user_type == 2) %>
+      <div><strong><%= User.find(announcement.user_id).full_name %></strong><br /></div>
+      <div><%= announcement.body %><br /></div>
+    <% end %>
+      <% if user_signed_in? && current_user.user_type == 2 %>
+        <div>(<%= link_to 'Show', announcement %> |
+        <%= link_to 'Edit', edit_announcement_path(announcement) %> |
+        <%= link_to 'Delete', announcement, method: :delete, data: { confirm: 'Are you sure?' } %>)</div>
+      <% end %>
+    </div><br />
+  <% end %>
+</div>
+
+<br>
+<% if user_signed_in? && current_user.user_type == 2 %>
+  <%= render 'form' %>
+<% end %>

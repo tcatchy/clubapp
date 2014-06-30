@@ -1,0 +1,51 @@
+<h1>Clubs to be approved</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Website</th>
+      <th>Reg_No</th>
+      <th>President</th>
+      <th>Treasurer</th>
+      <th>Admin</th>
+      <th>Nickname</th>
+      <th>Banner</th>
+      <th>Approve?</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @clubs.each do |club| %>
+      <tr>
+        <td><%= club.name %></td>
+        <td><%= club.description %></td>
+        <td><%= club.website %></td>
+        <td><%= club.reg_no %></td>
+
+        <td><%= club.president_first_name + " " + club.president_last_name %> <br />
+        <%= club.president_email %><br />
+    	<%= club.president_contact %></td>
+
+
+        <td><%= club.treasurer_first_name + " " + club.treasurer_last_name %> <br />
+        <%= club.treasurer_email %><br />
+    	<%= club.treasurer_contact %></td>
+
+        <td><%= club.admin_first_name + " " + club.admin_last_name %> <br />
+        <%= club.email %><br />
+    	<%= club.admin_contact %></td>
+
+        <td><%= club.nickname %></td>
+        <td><% if club.banner_file_name %>
+  			<%= image_tag club.banner.url(:thumb) %>
+		<% end %></td>
+        
+        <td><%= club.approved %></td>
+        	
+      </tr>
+    <% end %>
+  </tbody>
+</table>

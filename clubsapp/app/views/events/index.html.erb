@@ -1,0 +1,67 @@
+<% content_for :for_head do %>
+  <script type="text/javascript">
+  // Used js search function from, a lot has since been altered
+  // http://kilianvalkhof.com/2010/javascript/how-to-build-a-fast-simple-list-filter-with-jquery/
+    (function ($) {
+  // custom css expression for a case-insensitive contains()
+  jQuery.expr[':'].Contains = function(a,i,m){
+      return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase())>=0;
+  };
+
+
+  function listFilter(header, list) { // header is any element, list is an unordered list
+    // create and add the filter form to the header
+    var form = $("<br /><form>").attr({"class":"filterform","action":"#"}),
+        input = $("<input>").attr({
+          "class":"filterinput",
+          "type":"text",
+          "placeholder":"Search by event name or scroll through the list"
+        });
+    $(form).append(input).appendTo(header);
+
+    $(input)
+      .change( function () {
+        var filter = $(this).val();
+        if(filter) {
+          
+          $("div.name").find("a:not(:Contains(" + filter + "))").parent().parent().slideUp();
+          $("div.name").find("a:Contains(" + filter + ")").parent().parent().slideDown();
+        } else {
+          $(list).find("div").slideDown();
+        }
+        return false;
+      })
+    .keyup( function () {
+        // fire the above change event after every letter
+        $(this).change();
+    });
+  }
+
+
+  //ondomready
+  $(function () {
+    listFilter($("#header"), $("#list"));
+  });
+}(jQuery));
+
+  </script>
+<% end %>
+
+<h1 id="header">Events<br /><br /></h1>
+
+<div id="list">
+  <% @sorted_events.each do |event| %>
+  <div>
+      <% club = Club.find(event.club_id) %>
+      <div><%= link_to club.name, club %></div>
+      <% if event.image1_file_name %>
+        <div class="image"><%= image_tag event.image1.url(:thumb) %></div>
+      <% end %>
+      <div class="name"><%= link_to event.name, event %></div>
+      <div><%= event.event_type %></div>
+      <div><%= event.event_time.strftime("%H:%M, %d/%m/%Y") %></div>
+      <div><%= event.location %></div>
+      <br />
+  </div>
+  <% end %>
+</div>
